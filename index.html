@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>uma perguntinha pra você 🌸</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pink-50: #fff0f5;
+    --pink-100: #ffd6e7;
+    --pink-200: #ffadd2;
+    --pink-400: #f06292;
+    --pink-600: #c2185b;
+    --rose-bg: #fff5f8;
+    --white: #ffffff;
+    --text-dark: #3a1a2e;
+    --text-mid: #7a4060;
+    --text-soft: #b07090;
+    --green-wa: #25D366;
+    --green-wa-dark: #128C7E;
+    --radius: 20px;
+    --shadow: 0 8px 40px rgba(240, 98, 146, 0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--rose-bg);
+    color: var(--text-dark);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  .bg-hearts {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 0; overflow: hidden;
+  }
+  .bg-heart {
+    position: absolute;
+    font-size: 1.2rem;
+    opacity: 0.07;
+    animation: floatUp linear infinite;
+    user-select: none;
+  }
+  @keyframes floatUp {
+    0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.07; }
+    90% { opacity: 0.07; }
+    100% { transform: translateY(-10vh) rotate(30deg); opacity: 0; }
+  }
+
+  .screen {
+    display: none;
+    min-height: 100vh;
+    position: relative;
+    z-index: 1;
+    padding: 2rem 1.5rem;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    animation: fadeIn 0.6s ease;
+  }
+  .screen.active { display: flex; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 2.5rem 2rem;
+    box-shadow: var(--shadow);
+    max-width: 420px;
+    width: 100%;
+    border: 1.5px solid var(--pink-100);
+  }
+
+  .title-serif {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 8vw, 3rem);
+    color: var(--text-dark);
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+  }
+  .title-italic {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1.5rem, 6vw, 2.2rem);
+    color: var(--pink-600);
+    margin-bottom: 1.5rem;
+  }
+  .subtitle {
+    font-size: 0.9rem;
+    color: var(--text-soft);
+    margin-bottom: 2rem;
+    line-height: 1.6;
+  }
+  .subtitle a {
+    color: var(--pink-400);
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.85rem 2.5rem;
+    border-radius: 50px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--pink-400), var(--pink-600));
+    color: white;
+    box-shadow: 0 4px 20px rgba(240,98,146,0.35);
+  }
+  .btn-primary:hover, .btn-primary:active {
+    transform: scale(1.04);
+    box-shadow: 0 6px 24px rgba(240,98,146,0.5);
+  }
+  .btn-outline {
+    background: white;
+    color: var(--pink-600);
+    border: 2px solid var(--pink-200);
+  }
+  .btn-outline:hover { background: var(--pink-50); }
+  .btn-green {
+    background: linear-gradient(135deg, var(--green-wa), var(--green-wa-dark));
+    color: white;
+    width: 100%;
+    padding: 1rem 2rem;
+    font-size: 1.05rem;
+    box-shadow: 0 4px 20px rgba(37,211,102,0.35);
+  }
+  .btn-green:hover { transform: scale(1.02); }
+  .btn-next {
+    animation: pulse-btn 1.8s ease-in-out infinite;
+  }
+  @keyframes pulse-btn {
+    0%, 100% { box-shadow: 0 4px 20px rgba(240,98,146,0.35); transform: scale(1); }
+    50% { box-shadow: 0 8px 30px rgba(240,98,146,0.6); transform: scale(1.04); }
+  }
+
+  .btns-row {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+  #btn-no {
+    position: fixed;
+    z-index: 999;
+    transition: background 0.2s;
+    white-space: nowrap;
+  }
+
+  .s1-eyebrow {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-soft);
+    margin-bottom: 0.9rem;
+  }
+  .s1-main {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.35rem, 5.5vw, 1.9rem);
+    color: var(--text-dark);
+    line-height: 1.35;
+    margin-bottom: 0.4rem;
+  }
+  .s1-main em {
+    font-style: italic;
+    color: var(--pink-600);
+  }
+  .s1-divider {
+    width: 40px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--pink-400), var(--pink-200));
+    border-radius: 2px;
+    margin: 1rem auto 1.5rem;
+  }
+
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(60,10,40,0.7);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    animation: fadeIn 0.3s ease;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal-box {
+    background: white;
+    border-radius: var(--radius);
+    padding: 2rem 1.5rem;
+    max-width: 440px;
+    width: 100%;
+    max-height: 88vh;
+    overflow-y: auto;
+    text-align: center;
+  }
+  .modal-box h2 {
+    font-family: 'Playfair Display', serif;
+    color: var(--pink-600);
+    margin-bottom: 0.5rem;
+    font-size: 1.4rem;
+  }
+  .modal-box p {
+    font-size: 0.85rem;
+    color: var(--text-soft);
+    margin-bottom: 1.2rem;
+  }
+
+  .idol-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+  .idol-card {
+    border-radius: 14px;
+    overflow: hidden;
+    border: 2px solid var(--pink-100);
+    background: var(--pink-50);
+    height: 130px;
+    position: relative;
+  }
+  .idol-card img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+  }
+  .idol-label {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: linear-gradient(to top, rgba(60,10,40,0.85), transparent);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.5rem 0.4rem 0.35rem;
+    text-align: left;
+    line-height: 1.3;
+  }
+  .idol-card-full {
+    grid-column: 1 / -1;
+    height: 130px;
+  }
+  .idol-card-full img { object-position: center 30%; }
+
+  .confetti-emoji {
+    font-size: 3rem;
+    animation: bounceIn 0.7s ease;
+    margin-bottom: 0.5rem;
+  }
+  @keyframes bounceIn {
+    0% { transform: scale(0); }
+    60% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+  }
+  .gif-container {
+    margin: 1.2rem auto;
+    border-radius: 14px;
+    overflow: hidden;
+    max-width: 300px;
+    border: 3px solid var(--pink-200);
+  }
+  .gif-container img { width: 100%; display: block; }
+
+  .activities-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin: 1.2rem 0;
+    text-align: left;
+  }
+  .activity-card {
+    background: var(--pink-50);
+    border: 2px solid var(--pink-100);
+    border-radius: 16px;
+    padding: 0.9rem 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    -webkit-user-select: none;
+    user-select: none;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .activity-card:hover { border-color: var(--pink-400); background: #fff0f5; }
+  .activity-card.selected { border-color: var(--pink-600); background: var(--pink-100); }
+  .activity-card .emoji {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    display: block;
+    margin-bottom: 0.2rem;
+    color: var(--pink-600);
+    text-align: center;
+    width: 100%;
+  }
+  .activity-card .act-text {
+    font-size: 0.75rem;
+    color: var(--text-mid);
+    line-height: 1.35;
+    font-weight: 400;
+    text-align: center;
+  }
+  .activity-card .check-badge {
+    position: absolute;
+    top: 6px; right: 8px;
+    width: 20px; height: 20px;
+    background: var(--pink-600);
+    border-radius: 50%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .activity-card.selected .check-badge { display: flex; }
+
+  .date-section {
+    background: var(--pink-50);
+    border: 1.5px solid var(--pink-100);
+    border-radius: 16px;
+    padding: 1.2rem;
+    margin-bottom: 1rem;
+    text-align: left;
+  }
+  .date-section .label {
+    font-size: 0.8rem;
+    color: var(--text-soft);
+    margin-bottom: 0.3rem;
+    font-weight: 500;
+  }
+  .date-section .intro-text {
+    font-style: italic;
+    font-size: 0.88rem;
+    color: var(--pink-600);
+    margin-bottom: 0.8rem;
+    font-family: 'Playfair Display', serif;
+    line-height: 1.4;
+  }
+  .date-section input[type="date"],
+  .date-section input[type="time"] {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    border-radius: 12px;
+    border: 1.5px solid var(--pink-200);
+    background: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    color: var(--text-dark);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .date-section input:focus { border-color: var(--pink-600); }
+
+  /* ── TELA 4.5: PLAYLIST ── */
+  .playlist-open-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    background: linear-gradient(135deg, #ff0000cc, #cc0000);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    padding: 0.85rem 1.4rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 1rem;
+    text-decoration: none;
+    box-shadow: 0 4px 16px rgba(200,0,0,0.25);
+    transition: all 0.2s;
+  }
+  .playlist-open-btn:hover { transform: scale(1.02); }
+  .finale-link {
+    color: var(--pink-400);
+    text-decoration: underline;
+    cursor: pointer;
+    font-weight: 500;
+  }
+  .wa-subtext {
+    font-size: 0.78rem;
+    color: var(--text-soft);
+    font-style: italic;
+    margin-top: 0.6rem;
+  }
+  .step-dot {
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--pink-200);
+    margin: 0 3px;
+  }
+  .step-dot.active { background: var(--pink-600); }
+  .dots-row { margin-bottom: 1.5rem; }
+
+  .deco-top {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    animation: gentleBob 2.5s ease-in-out infinite;
+  }
+  @keyframes gentleBob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  @media (max-width: 380px) {
+    .activities-grid { grid-template-columns: 1fr; }
+    .idol-grid { grid-template-columns: 1fr; }
+    .idol-card-full { grid-column: auto; height: 130px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-hearts" id="bgHearts"></div>
+
+<!-- ===================== SCREEN 1 ===================== -->
+<div class="screen active" id="screen1">
+  <div class="dots-row">
+    <span class="step-dot active"></span>
+    <span class="step-dot"></span>
+    <span class="step-dot"></span>
+    <span class="step-dot"></span>
+    <span class="step-dot"></span>
+    <span class="step-dot"></span>
+  </div>
+  <div class="card">
+    <div class="deco-top">🌸</div>
+    <p class="s1-eyebrow">uma perguntinha...</p>
+    <h1 class="s1-main">
+      Até o Yuri Alberto acertaria esse gol...<br>
+      Você aceitaria sair comigo?
+    </h1>
+    <div class="s1-divider"></div>
+    <div class="btns-row">
+      <button class="btn btn-primary" onclick="goToScreen(2)" style="font-size:1.05rem; padding:0.9rem 2.8rem;">
+        Sim 💕
+      </button>
+    </div>
+    <p class="subtitle">
+      Obs: Tenta acertar o não pra você ver o que acontece! Você ia decepcionar as suas divas. Olha
+      <a onclick="openIdolModal()" style="cursor:pointer;">[aqui]</a>
+    </p>
+  </div>
+</div>
+
+<!-- Botão Não (foge) -->
+<button id="btn-no" class="btn btn-outline"
+  onmouseenter="fleeBtn()"
+  ontouchstart="fleeBtn()"
+  style="left:50%; top:60%; transform:translate(-50%,-50%);">
+  Não 🙅‍♀️
+</button>
+
+<!-- ===================== MODAL ÍDOLOS ===================== -->
+<div class="modal-overlay" id="idolModal">
+  <div class="modal-box">
+    <h2>😭 a reação deles...</h2>
+    <p>é assim que seus ídolos ficariam se você clicasse em não:</p>
+    <div class="idol-grid">
+      <div class="idol-card">
+        <img src="https://pbs.twimg.com/media/EPtjDemX4AEBinK.jpg"
+             onerror="this.src='https://placehold.co/200x130/ffd6e7/c2185b?text=Taylor+Swift'"
+             alt="Taylor Swift triste">
+        <div class="idol-label">Taylor Swift 😢</div>
+      </div>
+      <div class="idol-card">
+        <img src="https://jenesaispop.com/wp-content/uploads/2021/01/olivia-rodrigo-1280x720.jpg"
+             onerror="this.src='https://placehold.co/200x130/ffd6e7/c2185b?text=Olivia+Rodrigo'"
+             alt="Olivia Rodrigo triste">
+        <div class="idol-label">Olivia Rodrigo 😕</div>
+      </div>
+      <div class="idol-card">
+        <img src="https://queonnda.com/wp-content/uploads/2025/09/64cbdff6-eb7f-4316-8c31-c40c9ec66774-860x568.jpg"
+             onerror="this.src='https://placehold.co/200x130/ffd6e7/c2185b?text=Sabrina+Carpenter'"
+             alt="Sabrina Carpenter triste">
+        <div class="idol-label">Sabrina Carpenter 😔</div>
+      </div>
+      <div class="idol-card">
+        <img src="https://extra.globo.com/incoming/15324054-a7f-b41/w976h550-PROP/2015-790416942-20150212083502572ap_20150212.jpg"
+             onerror="this.src='https://placehold.co/200x130/ffd6e7/c2185b?text=Messi+2014'"
+             alt="Messi triste 2014">
+        <div class="idol-label">Messi 💔</div>
+      </div>
+      <div class="idol-card idol-card-full">
+        <img src="https://www.meutimao.com.br/fotos-do-corinthians/w941/2022/09/05/yuri_alberto_deitado_no_gramado_apos_lance_r278.jpg"
+             onerror="this.src='https://placehold.co/400x130/ffd6e7/c2185b?text=Yuri+Alberto+Corinthians'"
+             alt="Yuri Alberto Corinthians">
+        <div class="idol-label">Yuri Alberto totalmente Abalado... 🤦‍♂️⚽</div>
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="closeIdolModal()">Voltar ↩</button>
+  </div>
+</div>
+
+<!-- ===================== SCREEN 2 ===================== -->
+<div class="screen" id="screen2">
+  <div class="dots-row">
+    <span class="step-dot"></span>
+    <span class="step-dot active"></span>
+    <span class="step-dot"></span>
+    <span class="step-dot"></span>
+    <span class="step-dot"></span>
+    <span class="step-dot"></span>
+  </div>
+  <div class="card">
+    <div class="confetti-emoji">🎉🎊🎉</div>
+    <h1 class="title-serif" style="font-size:clamp(1.6rem,7vw,2.4rem); color: var(--pink-600);">
+      QUE?? SERIO???<br>UHUUUUU
+    </h1>
+    <p style="font-style:italic; color:var(--text-soft); margin:0.8rem 0 1rem; font-size:0.9rem; line-height:1.5;">
+      "o impossivel aconteceu meu Deus do céu"
+    </p>
+    <div class="gif-container">
+      <img src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif"
+           onerror="this.src='https://media.giphy.com/media/xT9IgG50Lg7rustyp2/giphy.gif'"
+           alt="Barcelona comemorando épico">
+    </div>
+    <button class="btn btn-primary btn-next" onclick="goToScreen(3)" style="margin-top:1.2rem;">
+      Avançar para os detalhes ✨
+    </button>
+  </div>
+</div>
+
+<!-- ===================== SCREEN 3 ===================== -->
+<div class="screen" id="screen3">
+  <div class="dots-row">
+    <span class="step-dot"></span>
+    <span class="step-dot"></span>
+    <span class="step-dot active"></span>
+    <span class="step-dot"></span>
+    <span class="step-dot"></span>
+    <span class="step-dot"></span>
+  </div>
+  <div class="card">
+    <div class="deco-top" style="font-size:2rem;">😁</div>
+    <h2 class="title-serif" style="font-size:clamp(1.1rem,4.5vw,1.5rem); margin-bottom:0.3rem; font-style:italic; color:var(--text-mid);">
+      "If you promised we could go real slow,<br>
+      'Cause I got chewing gum and a bunch of stuff I'd like to know"
+    </h2>
+    <p class="title-italic" style="font-size:1.1rem; margin-bottom:0.2rem;">
+      Qual vai ser a nossa programação?
+    </p>
+    <p style="font-size:0.78rem; color:var(--text-soft); margin-bottom:0rem;">
+      pode escolher mais de um ✌️
+    </p>
+    <div class="activities-grid" id="activitiesGrid">
+      <div class="activity-card" data-id="praia" data-label="x1 no fut na praia 🏖️⚽" onclick="toggleActivity(this)">
+        <div class="check-badge">✓</div>
+        <span class="emoji">Praia 🏖️</span>
+        <p class="act-text">Nada a ver um x1 no fut na praia? Raphinha contra Yamal?</p>
+      </div>
+      <div class="activity-card" data-id="pizza" data-label="pizza do Boyle 🍕" onclick="toggleActivity(this)">
+        <div class="check-badge">✓</div>
+        <span class="emoji">Pizza 🍕</span>
+        <p class="act-text">Depois a gente fala pro Boyle se a pizza é boa pro blog dele.</p>
+      </div>
+      <div class="activity-card" data-id="hamburguer" data-label="hambúrguer em Ubatuba 🍔" onclick="toggleActivity(this)">
+        <div class="check-badge">✓</div>
+        <span class="emoji">Lanche 🍔</span>
+        <p class="act-text">Ir atrás do Melhor Hambúrguer de Nova York (ou de Ubatuba mesmo). A descrição vai ser igual à do Marshall!</p>
+      </div>
+      <div class="activity-card" data-id="filmemusica" data-label="the eras tour ou rimas do memphis 🎵" onclick="toggleActivity(this)">
+        <div class="check-badge">✓</div>
+        <span class="emoji">Filme/Música 🎬</span>
+        <p class="act-text">The Eras Tour ou Barras e Rimas do Memphis?</p>
+      </div>
+      <div class="activity-card" data-id="cafe" data-label="expresso with Sabrina ☕" onclick="toggleActivity(this)">
+        <div class="check-badge">✓</div>
+        <span class="emoji">Café ☕</span>
+        <p class="act-text">Expresso with Sabrina Carpenter</p>
+      </div>
+      <div class="activity-card" data-id="beber" data-label="só beber e pronto 🍻" onclick="toggleActivity(this)">
+        <div class="check-badge">✓</div>
+        <span class="emoji">Beber 🍻</span>
+        <p class="act-text">Vamos só beber e pronto?</p>
+      </div>
+    </div>
+    <div id="nextBtn3" style="display:none; margin-top:0.5rem;">
+      <button class="btn btn-primary btn-next" onclick="goToScreen(4)" style="width:100%;">
+        Salvar preferências e escolher data 📅
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SCREEN 4 ===================== -->
+<div class="screen" id="screen4">
+  <div class="dots-row">
+    <span class="step-dot"></span>
+    <span class="step-dot"></span>
+    <span class="step-dot"></span>
+    <span class="step-dot active"></span>
+    <span class="step-dot"></span>
+    <span class="step-dot"></span>
+  </div>
+  <div class="card">
+    <div class="deco-top" style="font-size:2rem;">📅</div>
+    <h2 class="title-serif" style="font-size:clamp(1.2rem,5vw,1.7rem); margin-bottom:1.5rem;">
+      "Please, please, please... não estraga meus planos e me diz: que dia você tá livre?"
+    </h2>
+    <div class="date-section">
+      <p class="intro-text">"Drop everything now, me diz que dia você pode"</p>
+      <div class="label">📅 Escolha a data</div>
+      <input type="date" id="dateInput" min="">
+    </div>
+    <div class="date-section">
+      <p class="intro-text">"You got the driver's license... então você escolhe"</p>
+      <div class="label">🕐 Escolha o horário</div>
+      <input type="time" id="timeInput">
+    </div>
+    <button class="btn btn-primary btn-next" onclick="goToScreen(45)" style="width:100%; margin-top:0.5rem;">
+      Finalizar Agendamento 🎉
+    </button>
+  </div>
+</div>
+
+<!-- ===================== SCREEN 4.5: A SURPRESA ===================== -->
+<div class="screen" id="screen45">
+  <div class="dots-row">
+    <span class="step-dot"></span>
+    <span class="step-dot"></span>
+    <span class="step-dot"></span>
+    <span class="step-dot"></span>
+    <span class="step-dot active"></span>
+    <span class="step-dot"></span>
+  </div>
+  <div class="card">
+    <div class="deco-top" style="font-size:2rem;">🎵</div>
+
+    <h2 class="title-serif" style="font-size:clamp(1.3rem,5vw,1.8rem); margin-bottom:0.5rem;">
+      Uma surpresa antes...
+    </h2>
+
+    <div class="s1-divider"></div>
+
+    <p style="font-size:0.9rem; color:var(--text-mid); line-height:1.65; margin-bottom:1.4rem;">
+      A Taylor escreve álbuns inteiros e o Yamal faz gol pra caramba. Mas como eu não tenho o talento deles, fiz do meu jeito. Montei uma playlist no YouTube Music
+      <span style="font-style:italic; color:var(--pink-600);">(só você usa isso)</span>
+      com as músicas que me fazem lembrar de você.
+    </p>
+
+    <!-- Botão de abrir a playlist no YouTube Music -->
+    <a id="playlistLink" href="#" target="_blank" class="playlist-open-btn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+        <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.17 8.17 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/>
+      </svg>
+      Abrir playlist no YouTube Music 🎧
+    </a>
+
+    <div style="margin-top: 1.4rem;">
+      <button class="btn btn-primary btn-next" onclick="goToFinale()" style="width:100%;">
+        Ver a confirmação do nosso date 🗓️
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SCREEN 5 ===================== -->
+<div class="screen" id="screen5">
+  <div class="dots-row">
+    <span class="step-dot"></span>
+    <span class="step-dot"></span>
+    <span class="step-dot"></span>
+    <span class="step-dot"></span>
+    <span class="step-dot"></span>
+    <span class="step-dot active"></span>
+  </div>
+  <div class="card">
+    <div style="font-size:2.8rem; animation: bounceIn 0.7s ease; margin-bottom:0.5rem;">🥳</div>
+    <h1 class="title-serif" style="font-size:clamp(1.8rem,7vw,2.5rem); color:var(--pink-600);">
+      TUDO CONFIRMADO!
+    </h1>
+    <p style="font-family:'Playfair Display',serif; font-style:italic; font-size:1rem; color:var(--text-mid); margin:0.8rem 0 1.2rem; line-height:1.6;">
+      "its gonna be legen — wait for it — DARY...<br>LEGENDARY! 🏆"
+    </p>
+    <div style="background:var(--pink-50); border-radius:14px; padding:1rem 1.2rem; margin-bottom:1.2rem; text-align:left; border:1.5px solid var(--pink-100);">
+      <p style="font-size:0.8rem; color:var(--text-soft); margin-bottom:0.5rem;">📋 Resumo do encontro:</p>
+      <div id="summaryContent" style="font-size:0.88rem; color:var(--text-mid); line-height:1.7;"></div>
+    </div>
+      <p style="font-size:0.88rem; color:var(--text-mid); margin-bottom:1.2rem; line-height:1.5;">
+      Esse convite teve essa vibe aqui: Brooklyn 99, T1 E13 minuto 6:40
+    </p>
+    <button class="btn btn-green" onclick="sendWhatsApp()">
+      <span style="vertical-align:middle; margin-right:8px;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="white" style="vertical-align:middle; margin-top:-2px;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      </span>
+      Enviar confirmação pro meu Whatsapp
+    </button>
+
+  </div>
+</div>
+
+<script>
+  // ============ CONFIG — troque os valores aqui ============
+  const WHATSAPP_NUMBER    = '5512991643947';
+  const LINK_YOUTUBE_MUSIC = 'https://music.youtube.com/playlist?list=PLvRpay5QSnzM1sPZ4OYXRtIqstxfrWis-';
+
+  // ============ STATE ============
+  let selectedActivities = [];
+  let chosenDate = '';
+  let chosenTime = '';
+
+  // ============ BACKGROUND HEARTS ============
+  function createHearts() {
+    const container = document.getElementById('bgHearts');
+    const hearts = ['♥', '♡', '🌸', '✿', '❀'];
+    for (let i = 0; i < 18; i++) {
+      const el = document.createElement('span');
+      el.className = 'bg-heart';
+      el.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+      el.style.left = Math.random() * 100 + 'vw';
+      el.style.animationDuration = (10 + Math.random() * 15) + 's';
+      el.style.animationDelay = (Math.random() * 15) + 's';
+      el.style.fontSize = (0.8 + Math.random() * 1.2) + 'rem';
+      container.appendChild(el);
+    }
+  }
+  createHearts();
+
+  // ============ SCREEN NAV ============
+  function goToScreen(n) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen' + n).classList.add('active');
+    window.scrollTo(0, 0);
+    document.getElementById('btn-no').style.display = n === 1 ? 'inline-block' : 'none';
+
+    // Quando entrar na tela 4.5, configura o player e o link
+    if (n === 45) {
+      document.getElementById('playlistLink').href = LINK_YOUTUBE_MUSIC;
+
+    }
+  }
+
+  // ============ FLEEING "NÃO" ============
+  function fleeBtn() {
+    const btn = document.getElementById('btn-no');
+    const margin = 60;
+    const maxX = window.innerWidth - btn.offsetWidth - margin;
+    const maxY = window.innerHeight - btn.offsetHeight - margin;
+    btn.style.left = (margin + Math.random() * maxX) + 'px';
+    btn.style.top  = (margin + Math.random() * maxY) + 'px';
+    btn.style.transform = 'none';
+  }
+
+  const noBtn = document.getElementById('btn-no');
+  noBtn.style.left = (window.innerWidth / 2 - 60) + 'px';
+  noBtn.style.top  = (window.innerHeight * 0.6) + 'px';
+  noBtn.style.transform = 'none';
+
+  // ============ MODAL ============
+  function openIdolModal() { document.getElementById('idolModal').classList.add('open'); }
+  function closeIdolModal() { document.getElementById('idolModal').classList.remove('open'); }
+  document.getElementById('idolModal').addEventListener('click', function(e) {
+    if (e.target === this) closeIdolModal();
+  });
+
+  // ============ ACTIVITIES ============
+  function toggleActivity(card) {
+    const id    = card.dataset.id;
+    const label = card.dataset.label;
+    card.classList.toggle('selected');
+    if (card.classList.contains('selected')) {
+      if (!selectedActivities.find(a => a.id === id)) selectedActivities.push({ id, label });
+    } else {
+      selectedActivities = selectedActivities.filter(a => a.id !== id);
+    }
+    document.getElementById('nextBtn3').style.display = selectedActivities.length > 0 ? 'block' : 'none';
+  }
+
+  // ============ FINALE ============
+  function goToFinale() {
+    chosenDate = document.getElementById('dateInput').value;
+    chosenTime = document.getElementById('timeInput').value;
+    const dateStr = chosenDate
+      ? new Date(chosenDate + 'T12:00:00').toLocaleDateString('pt-BR', { weekday:'long', day:'numeric', month:'long', year:'numeric' })
+      : 'a definir';
+    const timeStr = chosenTime || 'a definir';
+    document.getElementById('summaryContent').innerHTML =
+      '<strong>Atividades escolhidas:</strong><br>' +
+      selectedActivities.map(a => '✅ ' + a.label).join('<br>') +
+      '<br><br><strong>Data:</strong> ' + dateStr +
+      '<br><strong>Horário:</strong> ' + timeStr;
+    goToScreen(5);
+  }
+
+  // ============ WHATSAPP ============
+  function sendWhatsApp() {
+    const actLabels = selectedActivities.map(a => '✅ ' + a.label).join('\n');
+    const dateStr = chosenDate
+      ? new Date(chosenDate + 'T12:00:00').toLocaleDateString('pt-BR', { weekday:'long', day:'numeric', month:'long', year:'numeric' })
+      : 'a definir';
+    const timeStr = chosenTime || 'a definir';
+    const msg =
+      '🌸 *CONFIRMAÇÃO DO ENCONTRO* 🌸\n\n' +
+      '*Atividades escolhidas:*\n' + actLabels + '\n\n' +
+      '*Data:* ' + dateStr + '\n' +
+      '*Horário:* ' + timeStr + '\n\n' +
+      'its gonna be legen — wait for it — DARY! 🎉';
+    window.open('https://api.whatsapp.com/send?phone=' + WHATSAPP_NUMBER + '&text=' + encodeURIComponent(msg), '_blank');
+  }
+
+  // ============ DATE MIN ============
+  document.getElementById('dateInput').min = new Date().toISOString().split('T')[0];
+
+  // ============ TOUCH: botão Não ============
+  document.getElementById('btn-no').addEventListener('touchstart', function(e) {
+    e.preventDefault();
+    fleeBtn();
+  }, { passive: false });
+</script>
+</body>
+</html>
